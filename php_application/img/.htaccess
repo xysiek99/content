@@ -1,0 +1,7 @@
+DirectoryIndex index.php index.html
+
+<FilesMatch ".php$">
+ AddHandler x-httpd-php74 .php 
+</FilesMatch>
+
+AddType application/x-httpd-php .php

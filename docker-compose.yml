@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: telelabp_DB
+    volumes:
+      - db_data:/var/lib/mysql
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile    
+    ports:
+      - 8080:80
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASS: example
+      DB_NAME: telelabp_DB
+    volumes:
+      - './php_application:/var/www/html'      
+    depends_on:
+      - db
+volumes:
+  db_data: {}

@@ -1,0 +1,6 @@
+[phpapp]
+172.104.251.186
+
+[phpapp:vars]
+ansible_user=root
+ansible_ssh_private_key_file=~/.ssh/wikijs_user_key.pub

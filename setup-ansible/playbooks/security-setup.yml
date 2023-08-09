@@ -1,0 +1,6 @@
+---
+- hosts: phpapp
+  gather_facts: no
+  become: yes
+  roles:
+    - ../roles/security-setup

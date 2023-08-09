@@ -1,0 +1,77 @@
+---
+- name: Run apt update and upgrade
+  ansible.builtin.apt:
+    state: present
+    update_cache: yes
+    upgrade: dist
+
+- name: Install unattended-upgrades
+  ansible.builtin.apt:
+    name: unattended-upgrades
+    state: present
+    update_cache: yes
+
+- name: Reconfigure dpkg
+  ansible.builtin.shell:
+    dpkg-reconfigure -pmedium unattended-upgrades
+
+- name: Create user {{ server_username }}
+  ansible.builtin.user:
+    state: present
+    name: "{{ server_username }}"
+    password: "{{ server_password | password_hash('sha512') }}"
+    group: sudo
+    shell: /bin/bash
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: "{{ server_username_key }}"
+
+- name: Copy {{ server_username }} ssh key to localhost
+  ansible.builtin.fetch:
+    src: "{{ item }}"
+    dest: ~/.ssh/
+    flat: yes
+  loop:
+    - /home/{{ server_username }}/{{ server_username_key }}
+    - /home/{{ server_username }}/{{ server_username_key }}.pub
+
+- name: Add {{ server_username }} ssh key to authorized
+  ansible.posix.authorized_key:
+    user: "{{ server_username }}"
+    state: present
+    key: "{{ lookup('file', '~/{{ server_username_key }}.pub') }}"
+
+- name: Configure sshd - no root and password login
+  ansible.builtin.lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regex: "^(#)?{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+    state: present
+  loop:
+    - { key: "PermitRootLogin", value: "no" }
+    - { key: "PasswordAuthentication", value: "no" } 
+
+- name: Restart ssh
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
+
+- name: Install uncomplicated firewall (ufw)
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: yes
+
+- name: Check if ufw is started
+  ansible.builtin.service:
+    name: ufw
+    state: started
+    enabled: yes      
+
+- name: Inform for next steps
+  ansible.builtin.debug:
+    msg: 
+    - "Security setup completed"
+    - "Modify ansible 'hosts' file by adding {{ server_username }} and his key path"
+    - "Create new entry in ~/.ssh/config file for user {{ server_username }}"
+    - "Change permission of {{ server_username }}_key to 600 and {{ server_username }}_key.pub to 644"
