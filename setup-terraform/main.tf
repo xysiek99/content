@@ -28,7 +28,7 @@ resource "linode_instance" "php_vm" {
   }
 
   provisioner "local-exec" {
-    command = templatefile("config-ssh-wikijs.tpl", {
+    command = templatefile("config-ssh.tpl", {
       custom_hostname = var.instance_name,
       hostname        = self.ip_address,
       user            = var.technician_username,
