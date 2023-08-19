@@ -40,3 +40,10 @@ variable "technician_public_key_path" {
   type    = string
   default = "~/.ssh/inzynier_key.pub"
 }
+
+# Ansible variable
+
+variable "ansible_host_file" {
+  type    = string
+  default = "../setup-ansible/inventory/DEV/hosts"
+}
