@@ -11,6 +11,12 @@
     state: present
     update_cache: yes
 
+- name: Check if unattended-upgrades service is running
+  ansible.builtin.service:
+    name: unattended-upgrades
+    state: started
+    enabled: yes 
+
 - name: Reconfigure dpkg
   ansible.builtin.shell:
     dpkg-reconfigure -pmedium unattended-upgrades
@@ -25,7 +31,7 @@
     - { key: "PermitRootLogin", value: "no" }
     - { key: "PasswordAuthentication", value: "no" } 
 
-- name: Restart ssh
+- name: Restart ssh to apply changes
   ansible.builtin.service:
     name: ssh
     state: restarted
@@ -36,16 +42,8 @@
     state: present
     update_cache: yes
 
-- name: Check if ufw is started
+- name: Check if ufw service is running
   ansible.builtin.service:
     name: ufw
     state: started
     enabled: yes      
-
-- name: Inform for next steps
-  ansible.builtin.debug:
-    msg: 
-    - "Security setup completed"
-    - "Modify ansible 'hosts' file by adding {{ server_username }} and his key path"
-    - "Create new entry in ~/.ssh/config file for user {{ server_username }}"
-    - "Change permission of {{ server_username }}_key to 600 and {{ server_username }}_key.pub to 644"
