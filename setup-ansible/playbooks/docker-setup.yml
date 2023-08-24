@@ -1,5 +1,5 @@
 ---
-- hosts: phpapp
+- hosts: php_app_vm
   gather_facts: no
   become: yes
   roles:
