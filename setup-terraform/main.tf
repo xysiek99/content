@@ -3,7 +3,7 @@ resource "linode_instance" "php_vm" {
   type            = "g6-nanode-1"
   image           = "linode/debian11"
   region          = "eu-central"
-  authorized_keys = [trimspace(file(var.ssh_public_key_path))]
+  root_pass       = var.root_password
 
   provisioner "remote-exec" {
     inline = [
@@ -22,7 +22,7 @@ resource "linode_instance" "php_vm" {
     connection {
       type        = "ssh"
       user        = "root"
-      private_key = file(var.ssh_private_key_path)
+      password    = var.root_password
       host        = self.ip_address
     }
   }

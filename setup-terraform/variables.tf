@@ -9,19 +9,9 @@ variable "instance_name" {
   default = "php_app_vm"
 }
 
-variable "root_pass" {
+variable "root_password" {
   type    = string
-  default = "t4_test"
-}
-
-variable "ssh_public_key_path" {
-  type    = string
-  default = "~/.ssh/wikijs_user_key.pub"
-}
-
-variable "ssh_private_key_path" {
-  type    = string
-  default = "~/.ssh/wikijs_user_key"
+  default = "MyRtTestPwd.1"
 }
 
 # Add technician user and his key
