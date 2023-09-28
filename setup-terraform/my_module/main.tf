@@ -7,11 +7,11 @@ terraform {
 }
 
 resource "linode_instance" "instance" {
-  label           = var.linode_config["instance_name"]
-  type            = "g6-nanode-1"
-  image           = "linode/debian11"
-  region          = "eu-central"
-  root_pass       = var.linode_config["root_password"]
+  label     = var.linode_config["instance_name"]
+  type      = "g6-nanode-1"
+  image     = "linode/debian11"
+  region    = "eu-central"
+  root_pass = var.linode_config["root_password"]
 
   provisioner "remote-exec" {
     inline = [
@@ -27,10 +27,10 @@ resource "linode_instance" "instance" {
     ]
 
     connection {
-      type        = "ssh"
-      user        = "root"
-      password    = var.linode_config["root_password"]
-      host        = self.ip_address
+      type     = "ssh"
+      user     = "root"
+      password = var.linode_config["root_password"]
+      host     = self.ip_address
     }
   }
 
@@ -46,11 +46,13 @@ resource "linode_instance" "instance" {
 
   provisioner "local-exec" {
     command = templatefile("create-ansible-hosts.tpl", {
-      hostsfile    = var.linode_config["ansible_host_file"],
-      hostgroup    = var.linode_config["instance_name"],
-      hostname     = self.ip_address,
-      user         = var.linode_config["technician_username"],
-      identityfile = var.linode_config["technician_private_key_path"]
+      redirect_operator = var.append_to_file ? ">>" : ">",
+      hostsfile         = var.linode_config["ansible_host_file"],
+      hostgroup         = var.linode_config["instance_name"],
+      hostname          = self.ip_address,
+      user              = var.linode_config["technician_username"],
+      identityfile      = var.linode_config["technician_private_key_path"],
+      add_ansible_vars  = var.add_ansible_vars
     })
     interpreter = ["bash", "-c"]
   }

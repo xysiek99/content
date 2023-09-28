@@ -1,8 +1,8 @@
-cat << EOF > ${hostsfile}
-[${hostgroup}]
-${hostname}
+HOSTBLOCK="[${hostgroup}]\n${hostname}\n"
+VARSBLOCK="[all:vars]\nansible_user=${user}\nansible_ssh_private_key_file=${identityfile}\n"
 
-[${hostgroup}:vars]
-ansible_user=${user}
-ansible_ssh_private_key_file=${identityfile}
-EOF
+echo -e $HOSTBLOCK ${redirect_operator} ${hostsfile}
+
+%{ if add_ansible_vars ~}
+  echo -e $VARSBLOCK >> ${hostsfile}
+%{ endif ~}
