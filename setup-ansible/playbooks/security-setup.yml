@@ -1,5 +1,5 @@
 ---
-- hosts: php_app_vm
+- hosts: php_vm, docker_registry_vm
   gather_facts: no
   become: yes
   roles:
