@@ -1,0 +1,6 @@
+---
+- hosts: docker_registry_vm
+  gather_facts: no
+  become: yes
+  roles:
+    - ../roles/setup-docker-registry/ 

@@ -1,0 +1,72 @@
+---
+- name: Check if /etc/hosts is properly configured
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "127.0.0.1   localhost docker-registry-vm"
+    regexp: '^127\.0\.0\.1'
+    state: present
+
+- name: Check if docker daemon is installed and running
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Start docker registry container
+  community.docker.docker_container:
+    name: "{{ docker_registry.container_name }}"
+    image: registry:2
+    state: started
+    restart: yes
+    ports:
+      - "{{ docker_registry.port }}:{{ docker_registry.port }}"
+
+- name: Create directory for docker images
+  ansible.builtin.file:
+    path: "/home/{{ server_username }}/docker_images"
+    state: directory
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0755
+
+- name: Copy compressed file
+  ansible.builtin.copy:
+    src: "{{ php_application.image_name }}.tar.gz"
+    dest: "/home/{{ server_username }}/docker_images/"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0664
+
+- name: Untar file
+  ansible.builtin.unarchive:
+    src: "/home/{{ server_username }}/docker_images/{{ php_application.image_name }}.tar.gz"
+    dest: "/home/{{ server_username }}/docker_images/"
+    remote_src: yes
+
+- name: Remove tar file
+  ansible.builtin.file:
+    path: "/home/{{ server_username }}/docker_images/{{ php_application.image_name }}.tar.gz"
+    state: absent
+
+- name: Build docker image
+  community.docker.docker_image:
+    name: "{{ php_application.image_name }}:{{ php_application.image_tag }}"
+    source: build
+    build:
+      path: "/home/{{ server_username }}/docker_images/{{ php_application.image_name }}"
+      pull: yes
+      nocache: false    
+
+- name: Tag docker image
+  community.docker.docker_image:
+    name: "{{ php_application.image_name }}:{{ php_application.image_tag }}"
+    repository: "{{ docker_registry.host }}:{{ docker_registry.port }}/{{ php_application.image_name }}"
+    tag: "{{ php_application.image_tag }}"
+    push: no
+    source: local
+
+- name: Send Docker image to repository
+  community.docker.docker_image:
+    name: "{{ docker_registry.host }}:{{ docker_registry.port }}/{{ php_application.image_name }}:{{ php_application.image_tag }}"
+    push: yes
+    source: local
