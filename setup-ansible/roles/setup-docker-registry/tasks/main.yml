@@ -1,11 +1,4 @@
 ---
-- name: Check if /etc/hosts is properly configured
-  ansible.builtin.lineinfile:
-    path: /etc/hosts
-    line: "127.0.0.1   localhost docker-registry-vm"
-    regexp: '^127\.0\.0\.1'
-    state: present
-
 - name: Check if docker daemon is installed and running
   ansible.builtin.service:
     name: docker

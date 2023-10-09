@@ -1,6 +1,6 @@
 ---
 - hosts: php_vm, docker_registry_vm
-  gather_facts: no
+  gather_facts: yes
   become: yes
   roles:
     - ../roles/security-setup

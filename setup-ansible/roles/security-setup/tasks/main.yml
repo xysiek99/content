@@ -47,3 +47,10 @@
     name: ufw
     state: started
     enabled: yes      
+
+- name: Check if /etc/hosts is properly configured
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "127.0.0.1   localhost {{ ansible_hostname }}"
+    regexp: '^127\.0\.0\.1'
+    state: present
