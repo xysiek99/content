@@ -1,4 +1,3 @@
-server_username: "{{ ansible_user }}"
 php_application:
   image_name: php_application
   image_tag: 1.0

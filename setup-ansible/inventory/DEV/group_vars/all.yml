@@ -1,0 +1,1 @@
+server_username: "{{ ansible_user }}"
