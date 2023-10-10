@@ -1,0 +1,6 @@
+---
+- hosts: php_vm
+  gather_facts: no
+  become: yes
+  roles:
+    - ../roles/deploy-php-application/

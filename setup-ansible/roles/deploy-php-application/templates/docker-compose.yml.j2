@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  db:
+    image: {{ db.image_name }}:{{ db.image_version }}
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ db.envs.mysql_root_password }}
+      MYSQL_DATABASE: {{ db.envs.mysql_database }}
+    volumes:
+      - {{ db.volume.name }}:{{ db.volume.path }}
+  app:
+    image: {{ docker_registry.ip }}:{{ docker_registry.port }}/{{ app.image_name }}:{{ app.image_version }}    
+    ports:
+      - {{ app.docker_port }}:{{ app.vm_port }}
+    environment:
+      DB_HOST: {{ app.envs.db_host }}
+      DB_USER: {{ app.envs.db_user }}
+      DB_PASS: {{ app.envs.db_pass }}
+      DB_NAME: {{ app.envs.db_name }}
+    volumes:
+      - {{ app.volume.name }}:{{ app.volume.path }}
+    depends_on:
+      - db
+volumes:
+  {{ db.volume.name }}: {}
+  {{ app.volume.name }}: {}

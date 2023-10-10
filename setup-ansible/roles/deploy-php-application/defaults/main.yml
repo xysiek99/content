@@ -1,0 +1,26 @@
+docker_registry:
+  ip: "{{ groups['docker_registry_vm'][0] }}"
+  port: 5000
+app:
+  image_name: php_application
+  image_version: 1.0
+  container_name: php_application
+  docker_port: 80
+  vm_port: 8080
+  volume:
+    name: php_application
+    path: /var/www/html
+  envs:
+    db_host: db
+    db_user: root
+    db_pass: example
+    db_name: telelabp_DB
+db:
+  image_name: mysql
+  image_version: 5.7
+  volume:
+    name: db_data
+    path: /var/lib/mysql
+  envs:
+    mysql_root_password: example
+    mysql_database: telelabp_DB

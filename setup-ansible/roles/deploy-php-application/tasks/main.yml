@@ -1,0 +1,34 @@
+---
+- name: Check if docker daemon is installed and running
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Create /etc/docker/daemon.json file
+  ansible.builtin.template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  register: daemon_json_result
+
+- name: Restart docker daemon
+  ansible.builtin.service:
+    name: docker
+    state: restarted
+  when: daemon_json_result.changed
+
+- name: Copy docker-compose.yml file
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "/home/{{ server_username }}/docker-compose.yml"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0644
+
+- name: Start docker containers
+  community.docker.docker_compose:
+    project_src: "/home/{{ server_username }}/"
+    state: present
