@@ -3,4 +3,4 @@
   gather_facts: no
   become: yes
   roles:
-    - ../roles/setup-docker-registry/ 
+    - ../roles/setup-docker-registry/
