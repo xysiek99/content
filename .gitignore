@@ -4,3 +4,4 @@ setup-terraform/terraform.tfstate
 setup-terraform/terraform.tfstate.backup
 plan-todos.txt
 setup-ansible/inventory/DEV/hosts
+setup-ansible/vault_password.txt
