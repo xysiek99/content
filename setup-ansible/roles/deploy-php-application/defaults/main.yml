@@ -6,7 +6,7 @@ app:
   image_version: 1.0
   container_name: php_application
   docker_port: 80
-  vm_port: 8080
+  vm_port: 80
   volume:
     name: php_application
     path: /var/www/html

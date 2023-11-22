@@ -10,7 +10,7 @@ services:
   app:
     image: {{ docker_registry.ip }}:{{ docker_registry.port }}/{{ app.image_name }}:{{ app.image_version }}    
     ports:
-      - {{ app.docker_port }}:{{ app.vm_port }}
+      - {{ app.vm_port }}:{{ app.docker_port }}
     environment:
       DB_HOST: {{ app.envs.db_host }}
       DB_USER: {{ app.envs.db_user }}
