@@ -4,11 +4,6 @@ variable "linode_token" {
   description = "Access token to linode account"
 }
 
-variable "instance_name" {
-  type    = string
-  default = "php_app_vm"
-}
-
 variable "root_password" {
   type    = string
   default = "MyRtTestPwd.1"
