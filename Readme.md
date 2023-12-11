@@ -1,6 +1,6 @@
 # Things needed:
 - Linode account (https://www.linode.com/)
-- Linode account token (configured to create and destroy resources)
+- Linode account token configured to READ&WRITE Linode instances (called "Linodes")
 - Machine with Terraform and Ansible installed
 - SSH Key pair for user on VMs, can be created using command ```ssh-keygen -b 4096 -t rsa -f ~/.ssh/inzynier_key -q -N ""``` (you can name it differently, but remember to change variables in setup-terraform/variables.tf)
 - Add your linode token to environment variables - name it ```TF_VAR_linode_token``` - it can be added into your .profile file, exported in shell before running deployment or added in files ```deploy.sh``` and ```destroy.sh```
