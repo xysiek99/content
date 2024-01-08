@@ -28,7 +28,7 @@
     dest: "/home/{{ server_username }}/docker_images/"
     owner: "{{ server_username }}"
     group: "{{ server_username }}"
-    mode: 0664
+    mode: 0644
 
 - name: Untar file
   ansible.builtin.unarchive:
@@ -40,6 +40,14 @@
   ansible.builtin.file:
     path: "/home/{{ server_username }}/docker_images/{{ php_application.image_name }}.tar.gz"
     state: absent
+    
+- name: Create Dockerfile for {{ php_application.image_name }}
+  ansible.builtin.template:
+    src: Dockerfile.j2
+    dest: "/home/{{ server_username }}/docker_images/{{ php_application.image_name }}/Dockerfile"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0644
 
 - name: Build docker image
   community.docker.docker_image:

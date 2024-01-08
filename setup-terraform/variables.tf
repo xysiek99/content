@@ -5,8 +5,8 @@ variable "linode_token" {
 }
 
 variable "root_password" {
-  type    = string
-  default = "MyRtTestPwd.1"
+  type      = string
+  sensitive = true
 }
 
 # Add technician user and his key
