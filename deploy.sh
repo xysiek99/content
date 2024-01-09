@@ -4,6 +4,19 @@ MAIN_DIRECTORY=$(pwd)
 TF_DIRECTORY="setup-terraform"
 ANSIBLE_DIRECTORY="setup-ansible"
 
+CHECK_ENV_VARS_SCRIPT="checkEnvVars.sh"
+CHECK_SSH_KEYS_SCRIPT="checkSshKeys.sh"
+
+# Run bash script to check required environment variables 
+if ! "$MAIN_DIRECTORY/$CHECK_ENV_VARS_SCRIPT"; then
+  exit 1
+fi
+
+# Run bash script to check if key pair exist, eventually recreate it
+if ! "$MAIN_DIRECTORY/$CHECK_SSH_KEYS_SCRIPT"; then
+  exit 1
+fi
+
 # Run terraform commands in terraform directory
 cd $MAIN_DIRECTORY/$TF_DIRECTORY
 
