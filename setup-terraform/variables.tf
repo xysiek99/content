@@ -1,8 +1,12 @@
+# Linode access token
+
 variable "linode_token" {
   type        = string
   sensitive   = true
   description = "Access token to linode account"
 }
+
+# Initial password for root user
 
 variable "root_password" {
   type      = string
