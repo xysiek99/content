@@ -1,26 +1,17 @@
-docker_registry:
-  ip: "{{ groups['docker_registry_vm'][0] }}"
-  port: 5000
 app:
-  image_name: php_application
+  image_name: "{{ php_application.image_name }}"
   image_version: 1.0
-  container_name: php_application
+  container_name: "{{ php_application.image_name }}"
   docker_port: 80
   vm_port: 80
   volume:
-    name: php_application
+    name: "{{ php_application.image_name }}"
     path: /var/www/html
   envs:
     db_host: db
     db_user: root
     db_name: telelabp_DB
-    db_pass: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          64353835616564656165346162646165373132346433323533333764646364353237653238393238
-          3738663739363337656331383032636565366633326131330a646434623934646466363334353164
-          36333435643832646238326461663662633635383534366636396165316665373039366133646631
-          6463346265373262300a333832653335646638356466363234373263343236643833313331313065
-          6430
+    db_pass: "{{ secret_vars.encrypted_db_pass }}"
 db:
   image_name: mysql
   image_version: 5.7
@@ -28,5 +19,5 @@ db:
     name: db_data
     path: /var/lib/mysql
   envs:
-    mysql_root_password: example
+    mysql_root_password: "{{ secret_vars.encrypted_db_pass }}"
     mysql_database: telelabp_DB

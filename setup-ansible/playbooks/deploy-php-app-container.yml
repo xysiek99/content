@@ -2,5 +2,10 @@
 - hosts: php_vm
   gather_facts: no
   become: yes
+  pre_tasks:
+    - name: Load secrets
+      include_vars:
+        file: ../roles/deploy-php-application/defaults/secrets.yml
+        name: secret_vars
   roles:
-    - ../roles/deploy-php-application/
+    - role: ../roles/deploy-php-application/
