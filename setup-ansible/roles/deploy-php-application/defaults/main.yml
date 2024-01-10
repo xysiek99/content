@@ -6,11 +6,11 @@ app:
   vm_port: 80
   volume:
     name: "{{ php_application.image_name }}"
-    path: /var/www/html
+    path: "{{ php_application.mount_location }}"
   envs:
     db_host: db
     db_user: root
-    db_name: telelabp_DB
+    db_name: "{{ db.envs.mysql_database }}"
     db_pass: "{{ secret_vars.encrypted_db_pass }}"
 db:
   image_name: mysql

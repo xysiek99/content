@@ -1,2 +1,4 @@
 build_php_application:
   image_tag: 1.0
+  image_name: "{{ php_application.image_name }}"
+  mount_location: "{{ php_application.mount_location }}"
