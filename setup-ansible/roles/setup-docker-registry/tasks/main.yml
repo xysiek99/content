@@ -24,42 +24,50 @@
 
 - name: Copy compressed file
   ansible.builtin.copy:
-    src: "{{ php_application.image_name }}.tar.gz"
+    src: "{{ build_php_application.image_name }}.tar.gz"
     dest: "/home/{{ server_username }}/docker_images/"
     owner: "{{ server_username }}"
     group: "{{ server_username }}"
-    mode: 0664
+    mode: 0644
 
 - name: Untar file
   ansible.builtin.unarchive:
-    src: "/home/{{ server_username }}/docker_images/{{ php_application.image_name }}.tar.gz"
+    src: "/home/{{ server_username }}/docker_images/{{ build_php_application.image_name }}.tar.gz"
     dest: "/home/{{ server_username }}/docker_images/"
     remote_src: yes
 
 - name: Remove tar file
   ansible.builtin.file:
-    path: "/home/{{ server_username }}/docker_images/{{ php_application.image_name }}.tar.gz"
+    path: "/home/{{ server_username }}/docker_images/{{ build_php_application.image_name }}.tar.gz"
     state: absent
 
-- name: Build docker image
+- name: Copy Dockerfile for {{ build_php_application.image_name }}
+  ansible.builtin.template:
+    src: Dockerfile.j2
+    dest: "/home/{{ server_username }}/docker_images/{{ build_php_application.image_name }}/Dockerfile"
+    owner: "{{ server_username }}"
+    group: "{{ server_username }}"
+    mode: 0644
+
+- name: Build docker image {{ build_php_application.image_name }}:{{ build_php_application.image_tag }}
   community.docker.docker_image:
-    name: "{{ php_application.image_name }}:{{ php_application.image_tag }}"
+    name: "{{ build_php_application.image_name }}:{{ build_php_application.image_tag }}"
     source: build
     build:
-      path: "/home/{{ server_username }}/docker_images/{{ php_application.image_name }}"
+      path: "/home/{{ server_username }}/docker_images/{{ build_php_application.image_name }}"
       pull: yes
       nocache: false    
 
 - name: Tag docker image
   community.docker.docker_image:
-    name: "{{ php_application.image_name }}:{{ php_application.image_tag }}"
-    repository: "{{ docker_registry.host }}:{{ docker_registry.port }}/{{ php_application.image_name }}"
-    tag: "{{ php_application.image_tag }}"
+    name: "{{ build_php_application.image_name }}:{{ build_php_application.image_tag }}"
+    repository: "{{ docker_registry.host }}:{{ docker_registry.port }}/{{ build_php_application.image_name }}"
+    tag: "{{ build_php_application.image_tag }}"
     push: no
     source: local
 
 - name: Send Docker image to repository
   community.docker.docker_image:
-    name: "{{ docker_registry.host }}:{{ docker_registry.port }}/{{ php_application.image_name }}:{{ php_application.image_tag }}"
+    name: "{{ docker_registry.host }}:{{ docker_registry.port }}/{{ build_php_application.image_name }}:{{ build_php_application.image_tag }}"
     push: yes
     source: local

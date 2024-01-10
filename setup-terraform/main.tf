@@ -1,5 +1,5 @@
 module "php_vm" {
-  source = "./my_module"
+  source = "./module_linode_vm"
   linode_config = {
     instance_name               = "php_vm"
     root_password               = var.root_password
@@ -14,7 +14,7 @@ module "php_vm" {
 }
 
 module "docker_registry_vm" {
-  source = "./my_module"
+  source = "./module_linode_vm"
   linode_config = {
     instance_name               = "docker_registry_vm"
     root_password               = var.root_password

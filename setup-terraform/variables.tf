@@ -1,12 +1,16 @@
+# Linode access token
+
 variable "linode_token" {
   type        = string
   sensitive   = true
   description = "Access token to linode account"
 }
 
+# Initial password for root user
+
 variable "root_password" {
-  type    = string
-  default = "MyRtTestPwd.1"
+  type      = string
+  sensitive = true
 }
 
 # Add technician user and his key
