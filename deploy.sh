@@ -21,6 +21,11 @@ if ! "$MAIN_DIRECTORY/$CHECK_SSH_KEYS_SCRIPT"; then
   exit 1
 fi
 
+# Run bash script to check for Ansible secrets and vault password file
+if ! "$MAIN_DIRECTORY/$CHECK_ANSIBLE_SECRETS_SCRIPT" "$ANSIBLE_VAULT_PWD_FILE" "$ANSIBLE_PHP_IMG_DEPLOY_SECRETS_FILE"; then
+  exit 1
+fi
+
 # Run terraform commands in terraform directory
 cd $MAIN_DIRECTORY/$TF_DIRECTORY
 
@@ -34,5 +39,5 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 
 ansible-playbook playbooks/initial-setup.yml -i inventory/DEV
 ansible-playbook playbooks/docker-setup.yml -i inventory/DEV
-ansible-playbook playbooks/docker-registry-setup.yml -i inventory/DEV 
+ansible-playbook playbooks/docker-registry-setup.yml -i inventory/DEV
 ansible-playbook playbooks/deploy-php-app-container.yml --vault-password-file $ANSIBLE_VAULT_PWD_FILE -i inventory/DEV
