@@ -23,7 +23,7 @@ cd $MAIN_DIRECTORY/$TF_DIRECTORY
 terraform init
 terraform apply -auto-approve
 
-# Run ansible commands in ansoble directory
+# Run ansible commands in ansible directory
 cd $MAIN_DIRECTORY/$ANSIBLE_DIRECTORY
 
 export ANSIBLE_HOST_KEY_CHECKING=False
