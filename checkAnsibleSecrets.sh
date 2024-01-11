@@ -27,12 +27,20 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
     rm "$secrets_file"
   fi
 
-  # TODO: 
-  # - input argument for vault pwd file
-  # - create vault pwd file
-  # - input argument for secret file
-  # - create ansible secret file (remember variable name = "encrypted_db_pass")
-  # - hash secret file using vault password file
+  # Input vault password (remove spaces if necessary) and write it to vault password file
+  read -s -p "Enter vault password (no spaces will be allowed): " vault_pwd
+  vault_pwd="${vault_pwd// /}"
+  echo "$vault_pwd" > "$vault_pwd_file"  
+
+  # Input databse configuration password (remove spaces if necessary) and write it to ansible secrets file for role
+  read -s -p "Enter databse configuration password (no spaces will be allowed): " db_secret_pwd
+  db_secret_pwd="${db_secret_pwd// /}"
+  echo "encrypted_db_pass: $db_secret_pwd" > "$vault_pwd_file"  
+
+  # Encrypt database password with ansible vault
+  ansible-vault encrypt $secrets_file --vault-password-file $vault_pwd_file
+
+  exit 0
 
 else
   echo "Cancelled"
