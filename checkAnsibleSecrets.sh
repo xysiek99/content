@@ -35,7 +35,7 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
   # Input databse configuration password (remove spaces if necessary) and write it to ansible secrets file for role
   read -s -p "Enter databse configuration password (no spaces will be allowed): " db_secret_pwd
   db_secret_pwd="${db_secret_pwd// /}"
-  echo "encrypted_db_pass: $db_secret_pwd" > "$vault_pwd_file"  
+  echo "encrypted_db_pass: $db_secret_pwd" > "$secrets_file"
 
   # Encrypt database password with ansible vault
   ansible-vault encrypt $secrets_file --vault-password-file $vault_pwd_file
