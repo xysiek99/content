@@ -6,6 +6,10 @@ ANSIBLE_DIRECTORY="setup-ansible"
 
 CHECK_ENV_VARS_SCRIPT="checkEnvVars.sh"
 CHECK_SSH_KEYS_SCRIPT="checkSshKeys.sh"
+CHECK_ANSIBLE_SECRETS_SCRIPT="checkAnsibleSecrets.sh"
+
+ANSIBLE_VAULT_PWD_FILE="vault_password.txt"
+ANSIBLE_PHP_IMG_DEPLOY_SECRETS_FILE="roles/deploy-php-application/defaults/secrets.yml"
 
 # Run bash script to check required environment variables 
 if ! "$MAIN_DIRECTORY/$CHECK_ENV_VARS_SCRIPT"; then
