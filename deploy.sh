@@ -35,4 +35,4 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 ansible-playbook playbooks/initial-setup.yml -i inventory/DEV
 ansible-playbook playbooks/docker-setup.yml -i inventory/DEV
 ansible-playbook playbooks/docker-registry-setup.yml -i inventory/DEV 
-ansible-playbook playbooks/deploy-php-app-container.yml --vault-password-file vault_password.txt -i inventory/DEV
+ansible-playbook playbooks/deploy-php-app-container.yml --vault-password-file $ANSIBLE_VAULT_PWD_FILE -i inventory/DEV
