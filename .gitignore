@@ -8,3 +8,4 @@ setup-ansible/inventory/DEV/hosts
 setup-ansible/vault_password.txt
 setup-ansible/.vscode
 setup-ansible/roles/deploy-php-application/defaults/secrets.yml
+.vscode/
