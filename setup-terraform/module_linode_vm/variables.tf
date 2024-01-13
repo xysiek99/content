@@ -4,7 +4,7 @@ variable "linode_config" {
 }
 
 variable "append_to_file" {
-  description = "Decide if we should append to the file or overwrite it"
+  description = "Flag to determine if file should be overwritten or to append content to it"
   type        = bool
 }
 
