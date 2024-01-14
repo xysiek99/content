@@ -1,5 +1,27 @@
 #!/usr/bin/env bash
 
+while [[ $# -gt 0 ]]; do
+  key="$1"
+
+  case $key in
+    -environment=*)
+      ENVIRONMENT="${key#*=}"
+      shift
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+done
+
+if [ -z "$ENVIRONMENT" ]; then
+  echo "Missing environment argument. Usage: $0 -environment=<env_name>"
+  exit 1
+fi
+
+export TF_VAR_ansible_environment=$ENVIRONMENT
+
 MAIN_DIRECTORY=$(pwd)
 TF_DIRECTORY="setup-terraform"
 ANSIBLE_DIRECTORY="setup-ansible"
@@ -39,7 +61,7 @@ cd $MAIN_DIRECTORY/$ANSIBLE_DIRECTORY
 
 export ANSIBLE_HOST_KEY_CHECKING=False
 
-ansible-playbook playbooks/initial-setup.yml -i inventory/DEV
-ansible-playbook playbooks/docker-setup.yml -i inventory/DEV
-ansible-playbook playbooks/docker-registry-setup.yml -i inventory/DEV
-ansible-playbook playbooks/deploy-php-app-container.yml --vault-password-file $ANSIBLE_VAULT_PWD_FILE -i inventory/DEV
+ansible-playbook playbooks/initial-setup.yml -i inventory/$ENVIRONMENT
+ansible-playbook playbooks/docker-setup.yml -i inventory/$ENVIRONMENT
+ansible-playbook playbooks/docker-registry-setup.yml -i inventory/$ENVIRONMENT
+ansible-playbook playbooks/deploy-php-app-container.yml --vault-password-file $ANSIBLE_VAULT_PWD_FILE -i inventory/$ENVIRONMENT

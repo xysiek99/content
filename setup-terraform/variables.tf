@@ -32,7 +32,12 @@ variable "technician_public_key_path" {
 
 # Ansible variable
 
+variable "ansible_environment" {
+  type    = string
+  default = "DEV"
+}
+
 variable "ansible_host_file" {
   type    = string
-  default = "../setup-ansible/inventory/DEV/hosts"
+  default = "../setup-ansible/inventory/${var.ansible_environment}/hosts"
 }
