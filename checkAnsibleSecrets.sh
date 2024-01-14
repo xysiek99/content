@@ -1,16 +1,31 @@
 #!/usr/bin/env bash
 
-# Checking number of given arguments
-if [ $# -ne 2 ]; then
-  echo "Missing arguments"
+vault_pwd_file=""
+secrets_file=""
+
+# Parse command-line arguments
+for arg in "$@"; do
+  case $arg in
+    -vault_pwd_file=*)
+      vault_pwd_file="${arg#*=}"
+      ;;
+    -secrets_file=*)
+      secrets_file="${arg#*=}"
+      ;;
+    *)
+      echo "Unknown argument: $arg"
+      exit 1
+      ;;
+  esac
+done
+
+# Checking if both files are provided
+if [ -z "$vault_pwd_file" ] || [ -z "$secrets_file" ]; then
+  echo "Missing arguments. Usage: $0 -vault_pwd_file=<vault_pwd_file> -secrets_file=<secrets_file>"
   exit 1
 fi
 
-# Mapping arguments to variables
-vault_pwd_file="$1"
-secrets_file="$2"
-
-# If both of files are present, script will quit
+# If both files are present, script will quit
 if [ -f "$vault_pwd_file" ] && [ -f "$secrets_file" ]; then
   echo "Secret file and vault password file found"
   exit 0
@@ -31,19 +46,17 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
   read -s -p "Enter vault password (no spaces will be allowed): " vault_pwd
   vault_pwd="${vault_pwd// /}"
   echo "$vault_pwd" > "$vault_pwd_file"
-
   echo
-
-  read -s -p "Enter databse configuration password (no spaces will be allowed): " db_secret_pwd
+  read -s -p "Enter database configuration password (no spaces will be allowed): " db_secret_pwd
   db_secret_pwd="${db_secret_pwd// /}"
   echo "encrypted_db_pass: $db_secret_pwd" > "$secrets_file"
 
   # Encrypt database password with ansible vault
-  ansible-vault encrypt $secrets_file --vault-password-file $vault_pwd_file
+  ansible-vault encrypt "$secrets_file" --vault-password-file "$vault_pwd_file"
 
   exit 0
 
 else
   echo "Cancelled"
   exit 1
-fi	
+fi
