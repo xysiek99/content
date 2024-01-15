@@ -1,5 +1,6 @@
+cp ~/.ssh/config ~/.ssh/config_$(date +%m-%d-%y_%H%M).backup
+
 if grep -q "^Host ${custom_hostname}$" ~/.ssh/config; then
-  cp ~/.ssh/config ~/.ssh/config_$(date +%m-%d-%y_%H%M).backup
   awk "/^Host ${custom_hostname}$/{flag=1;next} /^Host /{flag=0} !flag" ~/.ssh/config > ~/.ssh/config.temp
   mv ~/.ssh/config.temp ~/.ssh/config
 fi
