@@ -32,12 +32,8 @@ variable "technician_public_key_path" {
 
 # Ansible variable
 
-variable "ansible_environment" {
+variable "infra_environment" {
   type    = string
   default = "DEV"
-}
-
-variable "ansible_host_file" {
-  type    = string
-  default = "../setup-ansible/inventory/${var.ansible_environment}/hosts"
+  description = "Default environment value - it is overwritten while running deploy.sh/destroy.sh script"
 }

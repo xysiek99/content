@@ -1,3 +1,4 @@
+cat << EOF > ${groupvarsfile}
 server_username: "{{ ansible_user }}"
 
 # Global settings for dockerized php application 
@@ -11,3 +12,4 @@ docker_registry:
   port: 5000
   host: localhost
   container_name: registry
+EOF

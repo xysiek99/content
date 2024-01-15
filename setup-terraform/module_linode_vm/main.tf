@@ -47,8 +47,8 @@ resource "linode_instance" "instance" {
   provisioner "local-exec" {
     command = templatefile("create-ansible-hosts.tpl", {
       redirect_operator = var.append_to_file ? ">>" : ">",
-      hostsfile         = var.linode_config["ansible_host_file"],
-      hostgroup         = var.linode_config["instance_name"],
+      hostsfile         = "../setup-ansible/inventory/${var.linode_config["infra_environment"]}/hosts",
+      hostgroup         = var.linode_config["ansible_instance_name"],
       hostname          = self.ip_address,
       user              = var.linode_config["technician_username"],
       identityfile      = var.linode_config["technician_private_key_path"],
@@ -56,4 +56,11 @@ resource "linode_instance" "instance" {
     })
     interpreter = ["bash", "-c"]
   }
+
+  provisioner "local-exec" {
+    command = templatefile("create-groupvars-file.tpl", {
+      groupvarsfile         = "../setup-ansible/inventory/${var.linode_config["infra_environment"]}/group_vars/all.yml",
+    })
+    interpreter = ["bash", "-c"]
+  }  
 }
