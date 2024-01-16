@@ -59,8 +59,8 @@ resource "linode_instance" "instance" {
 
   provisioner "local-exec" {
     command = templatefile("create-groupvars-file.tpl", {
-      groupvarsfile         = "../setup-ansible/inventory/${var.linode_config["infra_environment"]}/group_vars/all.yml",
+      groupvarsfile = "../setup-ansible/inventory/${var.linode_config["infra_environment"]}/group_vars/all.yml",
     })
     interpreter = ["bash", "-c"]
-  }  
+  }
 }

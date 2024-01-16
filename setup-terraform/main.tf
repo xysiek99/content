@@ -7,7 +7,7 @@ module "php_vm" {
     technician_username         = var.technician_username
     technician_public_key_path  = var.technician_public_key_path
     technician_private_key_path = var.technician_private_key_path
-    infra_environment         = var.infra_environment
+    infra_environment           = var.infra_environment
     linode_token                = var.linode_token
   }
   append_to_file   = false
@@ -23,7 +23,7 @@ module "docker_registry_vm" {
     technician_username         = var.technician_username
     technician_public_key_path  = var.technician_public_key_path
     technician_private_key_path = var.technician_private_key_path
-    infra_environment         = var.infra_environment
+    infra_environment           = var.infra_environment
     linode_token                = var.linode_token
   }
   append_to_file   = true

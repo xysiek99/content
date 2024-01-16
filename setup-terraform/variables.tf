@@ -33,7 +33,7 @@ variable "technician_public_key_path" {
 # Ansible variable
 
 variable "infra_environment" {
-  type    = string
-  default = "DEV"
+  type        = string
+  default     = "DEV"
   description = "Default environment value - it is overwritten while running deploy.sh/destroy.sh script"
 }
