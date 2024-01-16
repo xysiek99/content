@@ -30,7 +30,7 @@ variable "technician_public_key_path" {
   default = "~/.ssh/inzynier_key.pub"
 }
 
-# Ansible variable
+# Environment variable
 
 variable "infra_environment" {
   type        = string
