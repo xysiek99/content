@@ -9,6 +9,7 @@ module "php_vm" {
     technician_private_key_path = var.technician_private_key_path
     infra_environment           = var.infra_environment
     linode_token                = var.linode_token
+    is_running                  = var.is_running
   }
   append_to_file   = false
   add_ansible_vars = false
@@ -25,6 +26,7 @@ module "docker_registry_vm" {
     technician_private_key_path = var.technician_private_key_path
     infra_environment           = var.infra_environment
     linode_token                = var.linode_token
+    is_running                  = var.is_running
   }
   append_to_file   = true
   depends_on       = [module.php_vm]

@@ -12,6 +12,7 @@ resource "linode_instance" "instance" {
   image     = "linode/debian11"
   region    = "eu-central"
   root_pass = var.linode_config["root_password"]
+  booted    = var.linode_config["is_running"]
 
   provisioner "remote-exec" {
     inline = [
