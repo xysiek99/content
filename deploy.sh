@@ -33,7 +33,7 @@ TF_ENVIRONMENT_DIRECTORY="$MAIN_DIRECTORY/$TF_ENVIRONMENTS/$ENVIRONMENT"
 CHECK_ENV_VARS_SCRIPT="checkEnvVars.sh"
 CHECK_SSH_KEYS_SCRIPT="checkSshKeys.sh"
 CHECK_ANSIBLE_SECRETS_SCRIPT="checkAnsibleSecrets.sh"
-CONFIG_TFSTATE_LOCATION="configTfstateLocation.sh"
+CONFIG_TFSTATE_SCRIPT="configTfstateLocation.sh"
 
 ANSIBLE_VAULT_PWD_FILE="vault_password.txt"
 ANSIBLE_PHP_IMG_DEPLOY_SECRETS_FILE="roles/deploy-php-application/defaults/secrets.yml"
@@ -48,7 +48,7 @@ if [ ! -d "$TF_ENVIRONMENT_DIRECTORY" ]; then
 fi
 
 # Run bash script to configure .tfstate location
-if ! "$MAIN_DIRECTORY/$CONFIG_TFSTATE_LOCATION" \
+if ! "$MAIN_DIRECTORY/$CONFIG_TFSTATE_SCRIPT" \
   -backend_file_location="$MAIN_DIRECTORY/$TF_DIRECTORY/backend.tf" \
   -tfstate_file_loaction="../$TF_ENVIRONMENTS/$ENVIRONMENT/terraform.tfstate"; then
   exit 1

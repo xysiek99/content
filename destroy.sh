@@ -26,14 +26,14 @@ MAIN_DIRECTORY=$(pwd)
 TF_DIRECTORY="setup-terraform"
 TF_ENVIRONMENTS="environments-terraform"
 
-# Configuration for .tfstate location
-cat > "$MAIN_DIRECTORY/$TF_DIRECTORY/backend.tf" <<EOF
-terraform {
-  backend "local" {
-    path = "../$TF_ENVIRONMENTS/$ENVIRONMENT/terraform.tfstate"
-  }
-}
-EOF
+CONFIG_TFSTATE_SCRIPT="configTfstateLocation.sh"
+
+# Run bash script to configure .tfstate location
+if ! "$MAIN_DIRECTORY/$CONFIG_TFSTATE_SCRIPT" \
+  -backend_file_location="$MAIN_DIRECTORY/$TF_DIRECTORY/backend.tf" \
+  -tfstate_file_loaction="../$TF_ENVIRONMENTS/$ENVIRONMENT/terraform.tfstate"; then
+  exit 1
+fi
 
 # Run terraform commands to destroy existing infrastructure
 cd $MAIN_DIRECTORY/$TF_DIRECTORY
