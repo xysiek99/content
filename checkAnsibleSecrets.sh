@@ -53,9 +53,9 @@ if [[ "$confirm" =~ ^[Yy]$ ]]; then
 
   # Encrypt database password with ansible vault
   ansible-vault encrypt "$secrets_file" --vault-password-file "$vault_pwd_file"
+  chmod 400 "$vault_pwd_file"
 
   exit 0
-
 else
   echo "Cancelled"
   exit 1
