@@ -1,10 +1,13 @@
 setup-terraform/.terraform/*
+setup-terraform/backend.tf
 setup-terraform/.terraform.lock.hcl
 setup-terraform/terraform.tfstate
 setup-terraform/terraform.tfstate.backup
+environments-terraform
 plan-todos.txt
 theory.txt
-setup-ansible/inventory/DEV/hosts
+setup-ansible/inventory
 setup-ansible/vault_password.txt
 setup-ansible/.vscode
 setup-ansible/roles/deploy-php-application/defaults/secrets.yml
+.vscode/

@@ -7,6 +7,7 @@ services:
       MYSQL_DATABASE: {{ db.envs.mysql_database }}
     volumes:
       - {{ db.volume.name }}:{{ db.volume.path }}
+    restart: always
   app:
     image: {{ docker_registry.ip }}:{{ docker_registry.port }}/{{ app.image_name }}:{{ app.image_version }}    
     ports:
@@ -20,6 +21,7 @@ services:
       - {{ app.volume.name }}:{{ app.volume.path }}
     depends_on:
       - db
+    restart: always 
 volumes:
   {{ db.volume.name }}: {}
   {{ app.volume.name }}: {}

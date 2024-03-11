@@ -30,9 +30,18 @@ variable "technician_public_key_path" {
   default = "~/.ssh/inzynier_key.pub"
 }
 
-# Ansible variable
+# Environment variable
 
-variable "ansible_host_file" {
-  type    = string
-  default = "../setup-ansible/inventory/DEV/hosts"
+variable "infra_environment" {
+  type        = string
+  default     = "DEV"
+  description = "Default environment value - it is overwritten while running deploy.sh/destroy.sh script"
+}
+
+# Machine state
+
+variable "is_running" {
+  type        = bool
+  default     = true
+  description = "Default machine state set to running"
 }

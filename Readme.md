@@ -2,8 +2,9 @@
 - Linode account (https://www.linode.com/)
 - Linode account token configured to READ&WRITE Linode instances (called "Linodes")
 - Machine with Terraform and Ansible installed
-- SSH Key pair for user on VMs, can be created using command ```ssh-keygen -b 4096 -t rsa -f ~/.ssh/inzynier_key -q -N ""``` (you can name it differently, but remember to change variables in setup-terraform/variables.tf)
-- Add your linode token to environment variables - name it ```TF_VAR_linode_token``` - it can be added into your .profile file, exported in shell before running deployment or added in files ```deploy.sh``` and ```destroy.sh```
+- SSH Key pair for user on VMs, it can be created by script ```checkSshKeys.sh``` (it is part of ```deploy.sh``` script, so there is no need to run it manually)
+- Add your linode token to environment variables as well as root password for initial setup - name it ```TF_VAR_linode_token``` and ```TF_VAR_root_password``` - it can be added into your .profile or .bashrc file, exported in shell before running deployment or exported directly in files ```deploy.sh``` and ```destroy.sh```. Also one of the helper scripts triggered by ```deploy.sh``` will eventually inform you about missing variables
+- Ansible vault password file and file with secrets dedicated for one of the roles - if they are missing they will be created automatically by one of the helper scripts triggered by ```deploy.sh```
 
 # Content of folders:
 - php_application: php application content
@@ -21,6 +22,6 @@ Host php_vm
 ```
 # Deployment infrastructure and application:
 ### Deployment:
-- run script ```deploy.sh``` - it will do all steps from setting up infrastructure via terraform and doing all configuration and deployment via ansible
+- run script ```deploy.sh``` - it will do all steps from setting up infrastructure via terraform and doing all configuration and deployment via ansible. It also uses helper scripts to check for Environment variables, SSH Keys and Ansible secrets
 ### Destroy:
 - run script ```destroy.sh``` - it will destroy all cloud infrastructure
