@@ -26,6 +26,12 @@ MAIN_DIRECTORY=$(pwd)
 TF_DIRECTORY="setup-terraform"
 TF_ENVIRONMENTS="environments-terraform"
 
+# Check if environment exists 
+if [ ! -d "$MAIN_DIRECTORY/$TF_ENVIRONMENTS/$ENVIRONMENT" ]; then
+  echo "Environment $ENVIRONMENT does not exist."
+  exit 1
+fi
+
 CONFIG_TFSTATE_SCRIPT="configTfstateLocation.sh"
 
 # Run bash script to configure .tfstate location
